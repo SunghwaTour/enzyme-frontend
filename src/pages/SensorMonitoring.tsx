@@ -200,7 +200,7 @@ export default function SensorMonitoring() {
                     </div>
                     <p className="text-sm text-muted-foreground mt-1">{alert.message}</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {new Date(alert.createdAt).toLocaleString('ko-KR')}
+                      {alert.createdAt ? new Date(alert.createdAt).toLocaleString('ko-KR') : '시간 미상'}
                     </p>
                   </div>
                   <Button 

@@ -11,9 +11,9 @@ async function throwIfResNotOk(res: Response) {
 /**
  * Get auth headers with Supabase token for Django API calls
  */
-async function getAuthHeaders(): Promise<HeadersInit> {
+async function getAuthHeaders(): Promise<Record<string, string>> {
   const token = await getSupabaseToken();
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
 
@@ -29,7 +29,7 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const headers = data ? await getAuthHeaders() : {};
+  const headers: Record<string, string> = data ? await getAuthHeaders() : {};
 
   // Add auth header even for GET requests if we have a token
   if (!data) {
@@ -58,7 +58,7 @@ export const getQueryFn: <T>(options: {
   async ({ queryKey }) => {
     // Get Supabase token for authentication
     const token = await getSupabaseToken();
-    const headers: HeadersInit = {};
+    const headers: Record<string, string> = {};
 
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
