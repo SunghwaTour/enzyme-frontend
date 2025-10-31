@@ -69,7 +69,7 @@ function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/" data-testid="nav-dashboard">
+              <a href="/dashboard" data-testid="nav-dashboard">
                 <LayoutDashboard className="h-4 w-4" />
                 <span>대시보드</span>
               </a>
@@ -232,7 +232,14 @@ function Router() {
               </header>
               <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
                 <Switch>
-                  <Route path="/" component={Dashboard} />
+                  <Route path="/">
+                    {() => {
+                      if (typeof window !== 'undefined') {
+                        window.location.href = "/dashboard";
+                      }
+                      return null;
+                    }}
+                  </Route>
                   <Route path="/dashboard" component={Dashboard} />
                   <Route path="/admin" component={Dashboard} />
                   <Route path="/rooms" component={RoomManagement} />

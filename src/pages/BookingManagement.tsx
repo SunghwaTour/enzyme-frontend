@@ -22,10 +22,26 @@ export default function BookingManagement() {
 
   const { data: bookings = [], isLoading } = useQuery<BookingWithDetails[]>({
     queryKey: ["/api/bookings"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   const { data: todayBookings = [] } = useQuery<BookingWithDetails[]>({
     queryKey: ["/api/bookings/today"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   const updateBookingMutation = useMutation({

@@ -20,6 +20,14 @@ export default function CustomerManagement() {
 
   const { data: customers = [], isLoading } = useQuery<Customer[]>({
     queryKey: ["/api/customers"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   const filteredCustomers = customers.filter((customer: Customer) => {

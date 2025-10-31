@@ -25,11 +25,27 @@ export default function SafetyManagement() {
   // Fetch checklist items
   const { data: checklistItems = [], isLoading: isLoadingItems } = useQuery<SafetyChecklistItem[]>({
     queryKey: ["/api/safety/checklist-items"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   // Fetch today's check records
   const { data: todayRecords = [], isLoading: isLoadingRecords } = useQuery<SafetyCheckRecord[]>({
     queryKey: ["/api/safety/check-records/today"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   // Create check record mutation

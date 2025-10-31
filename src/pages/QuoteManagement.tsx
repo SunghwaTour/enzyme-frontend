@@ -30,10 +30,26 @@ export default function QuoteManagement() {
 
   const { data: quotes = [], isLoading } = useQuery<Quote[]>({
     queryKey: ["/api/quotes"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   const { data: customers = [] } = useQuery<Customer[]>({
     queryKey: ["/api/customers"],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   const createMutation = useMutation({

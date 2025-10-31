@@ -22,11 +22,27 @@ export default function CustomerApp() {
 
   const { data: rooms = [] } = useQuery<Room[]>({
     queryKey: [API_ENDPOINTS.ROOMS.LIST],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   // Django doesn't have /bookings/today - need to filter on client side or implement backend
   const { data: allBookings = [] } = useQuery<any[]>({
     queryKey: [API_ENDPOINTS.BOOKINGS.LIST],
+    select: (data: any) => {
+      // Django REST Framework pagination: extract results array
+      if (data && typeof data === 'object' && 'results' in data) {
+        return data.results;
+      }
+      // If it's already an array, return as is
+      return Array.isArray(data) ? data : [];
+    },
   });
 
   // Filter today's bookings on client side
