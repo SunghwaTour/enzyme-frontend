@@ -152,25 +152,26 @@ export default function BookingForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-md">
-        <DialogHeader>
-          <DialogTitle>새 예약 생성</DialogTitle>
+      <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-xl font-bold">새 예약 생성</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>고객 전화번호</FormLabel>
+                  <FormLabel className="text-sm font-semibold text-foreground">고객 전화번호</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
                       placeholder="010-0000-0000"
                       onChange={(e) => handlePhoneChange(e.target.value)}
                       data-testid="input-phone"
+                      className="h-11 text-base"
                     />
                   </FormControl>
                   <FormMessage />
@@ -179,15 +180,22 @@ export default function BookingForm({
             />
 
             {customerQuery.isLoading && (
-              <div className="text-sm text-muted-foreground">고객 정보 확인 중...</div>
+              <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                고객 정보 확인 중...
+              </div>
             )}
 
             {customerData && (
-              <div className="bg-muted p-3 rounded-lg" data-testid="customer-info">
-                <div className="text-sm space-y-1">
-                  <div className="font-medium" data-testid="text-customer-name">{customerData.name}</div>
-                  <div className="text-muted-foreground">
-                    정기권: {customerData.passes.reduce((sum, p) => sum + p.remainingSessions, 0)}회 남음
+              <div className="bg-primary/5 border border-primary/20 p-4 rounded-lg" data-testid="customer-info">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium text-muted-foreground">고객 정보</span>
+                  </div>
+                  <div className="font-semibold text-base text-foreground" data-testid="text-customer-name">
+                    {customerData.name}
+                  </div>
+                  <div className="text-sm text-foreground/80">
+                    정기권: <span className="font-medium text-primary">{customerData.passes.reduce((sum, p) => sum + p.remainingSessions, 0)}회</span> 남음
                   </div>
                 </div>
               </div>
@@ -198,10 +206,10 @@ export default function BookingForm({
               name="roomId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이용 관</FormLabel>
+                  <FormLabel className="text-sm font-semibold text-foreground">이용 관</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger data-testid="select-room">
+                      <SelectTrigger data-testid="select-room" className="h-11 text-base">
                         <SelectValue placeholder="관을 선택하세요" />
                       </SelectTrigger>
                     </FormControl>
@@ -224,10 +232,10 @@ export default function BookingForm({
               name="position"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이용 위치</FormLabel>
+                  <FormLabel className="text-sm font-semibold text-foreground">이용 위치</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger data-testid="select-position">
+                      <SelectTrigger data-testid="select-position" className="h-11 text-base">
                         <SelectValue placeholder="위치를 선택하세요" />
                       </SelectTrigger>
                     </FormControl>
@@ -236,10 +244,10 @@ export default function BookingForm({
                       <SelectItem value="leg">다리 위치 (하단)</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-xs text-muted-foreground mt-2">
                     * 한 관에서 2명이 동시에 다른 위치를 이용할 수 있습니다
                   </p>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -249,16 +257,16 @@ export default function BookingForm({
               name="passType"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>이용권 종류</FormLabel>
+                  <FormLabel className="text-sm font-semibold text-foreground">이용권 종류</FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger data-testid="select-pass-type">
+                      <SelectTrigger data-testid="select-pass-type" className="h-11 text-base">
                         <SelectValue />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       <SelectItem value="day_pass">당일권 (₩40,000)</SelectItem>
-                      <SelectItem 
+                      <SelectItem
                         value="membership"
                         disabled={!customerData || customerData.passes.reduce((sum, p) => sum + p.remainingSessions, 0) === 0}
                       >
@@ -271,20 +279,20 @@ export default function BookingForm({
               )}
             />
 
-            <div className="flex space-x-2 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={onClose} 
-                className="flex-1"
+            <div className="flex space-x-3 pt-6 border-t">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={onClose}
+                className="flex-1 h-11 font-medium"
                 data-testid="button-cancel-booking"
               >
                 취소
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 disabled={createBookingMutation.isPending || !customerData}
-                className="flex-1"
+                className="flex-1 h-11 font-medium"
                 data-testid="button-create-booking"
               >
                 {createBookingMutation.isPending ? "생성 중..." : "예약 생성"}

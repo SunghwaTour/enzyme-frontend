@@ -141,18 +141,23 @@ export default function BookingManagement() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground" data-testid="text-booking-management-title">예약 관리</h1>
-        <Button 
+        <div>
+          <h1 className="text-3xl font-bold text-foreground mb-1" data-testid="text-booking-management-title">예약 관리</h1>
+          <p className="text-sm text-muted-foreground">고객 예약 현황을 확인하고 관리합니다</p>
+        </div>
+        <Button
           onClick={() => setIsBookingFormOpen(true)}
           data-testid="button-new-booking"
+          size="lg"
+          className="shadow-md"
         >
           <Calendar className="h-4 w-4 mr-2" />
-          새 예약
+          새 예약 생성
         </Button>
       </div>
 
       {/* Filters */}
-      <Card>
+      <Card className="shadow-sm">
         <CardContent className="p-6">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
@@ -162,14 +167,14 @@ export default function BookingManagement() {
                   placeholder="고객명, 전화번호, 관명으로 검색..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 h-11"
                   data-testid="input-search-bookings"
                 />
               </div>
             </div>
-            <div className="w-full md:w-48">
+            <div className="w-full md:w-56">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger data-testid="select-status-filter">
+                <SelectTrigger data-testid="select-status-filter" className="h-11">
                   <Filter className="h-4 w-4 mr-2" />
                   <SelectValue />
                 </SelectTrigger>
@@ -189,109 +194,123 @@ export default function BookingManagement() {
 
       {/* Today's Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-primary" data-testid="text-today-total">
-              {todayBookings.length}
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl font-bold text-primary" data-testid="text-today-total">
+                {todayBookings.length}
+              </div>
+              <Calendar className="h-5 w-5 text-primary/60" />
             </div>
-            <div className="text-sm text-muted-foreground">오늘 총 예약</div>
+            <div className="text-sm font-medium text-muted-foreground">오늘 총 예약</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-success" data-testid="text-today-confirmed">
-              {todayBookings.filter((b: BookingWithDetails) => b.status === 'confirmed').length}
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl font-bold text-green-600" data-testid="text-today-confirmed">
+                {todayBookings.filter((b: BookingWithDetails) => b.status === 'confirmed').length}
+              </div>
+              <CheckCircle className="h-5 w-5 text-green-600/60" />
             </div>
-            <div className="text-sm text-muted-foreground">예약완료</div>
+            <div className="text-sm font-medium text-muted-foreground">예약완료</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-warning" data-testid="text-today-in-progress">
-              {todayBookings.filter((b: BookingWithDetails) => b.status === 'in_progress').length}
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl font-bold text-orange-600" data-testid="text-today-in-progress">
+                {todayBookings.filter((b: BookingWithDetails) => b.status === 'in_progress').length}
+              </div>
+              <Eye className="h-5 w-5 text-orange-600/60" />
             </div>
-            <div className="text-sm text-muted-foreground">이용중</div>
+            <div className="text-sm font-medium text-muted-foreground">이용중</div>
           </CardContent>
         </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-muted-foreground" data-testid="text-today-completed">
-              {todayBookings.filter((b: BookingWithDetails) => b.status === 'completed').length}
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-3xl font-bold text-blue-600" data-testid="text-today-completed">
+                {todayBookings.filter((b: BookingWithDetails) => b.status === 'completed').length}
+              </div>
+              <XCircle className="h-5 w-5 text-blue-600/60" />
             </div>
-            <div className="text-sm text-muted-foreground">완료</div>
+            <div className="text-sm font-medium text-muted-foreground">완료</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Bookings Table */}
-      <Card>
+      <Card className="shadow-sm">
         <CardHeader>
-          <CardTitle>예약 목록</CardTitle>
+          <CardTitle className="text-lg font-semibold">예약 목록</CardTitle>
         </CardHeader>
         <CardContent>
           {filteredBookings.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground" data-testid="text-no-bookings">
-              {searchTerm || statusFilter !== "all" ? "검색 조건에 맞는 예약이 없습니다." : "예약이 없습니다."}
+            <div className="text-center py-12 text-muted-foreground" data-testid="text-no-bookings">
+              <Calendar className="h-12 w-12 mx-auto mb-3 opacity-20" />
+              <p className="font-medium">{searchTerm || statusFilter !== "all" ? "검색 조건에 맞는 예약이 없습니다." : "예약이 없습니다."}</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-muted/50">
+                <thead className="bg-muted/30 border-b">
                   <tr>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">예약 시간</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">고객명</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">연락처</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">관</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">위치</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">이용권</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">상태</th>
-                    <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground">작업</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">예약 시간</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">고객명</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">연락처</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">관</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">위치</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">이용권</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">상태</th>
+                    <th className="text-left py-3 px-4 text-xs font-semibold text-foreground uppercase tracking-wider">작업</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
                   {filteredBookings.map((booking: BookingWithDetails) => (
-                    <tr key={booking.id} className="hover:bg-muted/30 transition-colors" data-testid={`row-booking-${booking.id}`}>
-                      <td className="py-4 px-4 text-sm">
+                    <tr key={booking.id} className="hover:bg-muted/20 transition-colors" data-testid={`row-booking-${booking.id}`}>
+                      <td className="py-4 px-4">
                         <div>
-                          <div className="font-medium">
+                          <div className="font-semibold text-sm text-foreground">
                             {new Date(booking.startTime).toLocaleDateString('ko-KR')}
                           </div>
-                          <div className="text-muted-foreground">
+                          <div className="text-xs text-muted-foreground mt-0.5">
                             {new Date(booking.startTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
                             {' - '}
                             {new Date(booking.endTime).toLocaleTimeString('ko-KR', { hour: '2-digit', minute: '2-digit' })}
                           </div>
                         </div>
                       </td>
-                      <td className="py-4 px-4 text-sm font-medium" data-testid={`text-customer-name-${booking.id}`}>
+                      <td className="py-4 px-4 text-sm font-semibold text-foreground" data-testid={`text-customer-name-${booking.id}`}>
                         {booking.customer.name}
                       </td>
                       <td className="py-4 px-4 text-sm text-muted-foreground" data-testid={`text-customer-phone-${booking.id}`}>
                         {booking.customer.phone}
                       </td>
-                      <td className="py-4 px-4 text-sm" data-testid={`text-room-name-${booking.id}`}>
+                      <td className="py-4 px-4 text-sm font-medium text-foreground" data-testid={`text-room-name-${booking.id}`}>
                         {booking.room.name}
                       </td>
                       <td className="py-4 px-4 text-sm" data-testid={`text-position-${booking.id}`}>
-                        <Badge variant="outline">
+                        <Badge variant="outline" className="font-medium">
                           {booking.position === 'shoulder' ? '어깨' : '다리'}
                         </Badge>
                       </td>
                       <td className="py-4 px-4 text-sm">
-                        <Badge variant={booking.passId ? "default" : "secondary"}>
+                        <Badge variant={booking.passId ? "default" : "secondary"} className="font-medium">
                           {booking.passId ? "정기권" : "당일권"}
                         </Badge>
                       </td>
                       <td className="py-4 px-4 text-sm">
-                        <Badge 
+                        <Badge
                           variant={getStatusBadgeVariant(booking.status)}
                           data-testid={`badge-status-${booking.id}`}
+                          className="font-medium"
                         >
                           {getStatusText(booking.status)}
                         </Badge>
                       </td>
-                      <td className="py-4 px-4 text-sm">
-                        <div className="flex space-x-2">
+                      <td className="py-4 px-4">
+                        <div className="flex items-center space-x-1.5">
                           {canCheckin(booking) && (
                             <Button
                               size="sm"
@@ -299,8 +318,10 @@ export default function BookingManagement() {
                               onClick={() => updateBookingMutation.mutate({ bookingId: booking.id, action: 'checkin' })}
                               disabled={updateBookingMutation.isPending}
                               data-testid={`button-checkin-${booking.id}`}
+                              className="h-8 px-3"
                             >
-                              <CheckCircle className="h-4 w-4" />
+                              <CheckCircle className="h-3.5 w-3.5 mr-1" />
+                              체크인
                             </Button>
                           )}
                           {canCheckout(booking) && (
@@ -310,8 +331,10 @@ export default function BookingManagement() {
                               onClick={() => updateBookingMutation.mutate({ bookingId: booking.id, action: 'checkout' })}
                               disabled={updateBookingMutation.isPending}
                               data-testid={`button-checkout-${booking.id}`}
+                              className="h-8 px-3"
                             >
-                              <XCircle className="h-4 w-4" />
+                              <XCircle className="h-3.5 w-3.5 mr-1" />
+                              체크아웃
                             </Button>
                           )}
                           {canCancel(booking) && (
@@ -321,6 +344,7 @@ export default function BookingManagement() {
                               onClick={() => updateBookingMutation.mutate({ bookingId: booking.id, action: 'cancel' })}
                               disabled={updateBookingMutation.isPending}
                               data-testid={`button-cancel-${booking.id}`}
+                              className="h-8 px-3"
                             >
                               취소
                             </Button>
@@ -330,6 +354,7 @@ export default function BookingManagement() {
                             variant="ghost"
                             onClick={() => setSelectedBooking(booking)}
                             data-testid={`button-view-${booking.id}`}
+                            className="h-8 w-8 p-0"
                           >
                             <Eye className="h-4 w-4" />
                           </Button>

@@ -54,13 +54,13 @@ function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center space-x-3 px-4 py-3">
-          <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-            <Waves className="h-5 w-5 text-primary-foreground" />
+        <div className="flex items-center space-x-3 px-4 py-4">
+          <div className="w-11 h-11 bg-gradient-to-br from-primary to-primary/80 rounded-lg flex items-center justify-center shadow-md">
+            <Waves className="h-6 w-6 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-foreground">효소방</h1>
-            <p className="text-sm text-muted-foreground">관리 시스템</p>
+            <h1 className="text-xl font-bold text-foreground tracking-tight">효소방</h1>
+            <p className="text-xs text-muted-foreground font-medium">관리 시스템</p>
           </div>
         </div>
       </SidebarHeader>
@@ -69,88 +69,88 @@ function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/dashboard" data-testid="nav-dashboard">
+              <a href="/dashboard" data-testid="nav-dashboard" className="font-medium">
                 <LayoutDashboard className="h-4 w-4" />
                 <span>대시보드</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/rooms" data-testid="nav-rooms">
+              <a href="/rooms" data-testid="nav-rooms" className="font-medium">
                 <DoorOpen className="h-4 w-4" />
                 <span>관 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/bookings" data-testid="nav-bookings">
+              <a href="/bookings" data-testid="nav-bookings" className="font-medium">
                 <Calendar className="h-4 w-4" />
                 <span>예약 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/customers" data-testid="nav-customers">
+              <a href="/customers" data-testid="nav-customers" className="font-medium">
                 <Users className="h-4 w-4" />
                 <span>고객 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/passes" data-testid="nav-passes">
+              <a href="/passes" data-testid="nav-passes" className="font-medium">
                 <CreditCard className="h-4 w-4" />
                 <span>이용권 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/sensors" data-testid="nav-sensors">
+              <a href="/sensors" data-testid="nav-sensors" className="font-medium">
                 <Thermometer className="h-4 w-4" />
                 <span>센서 모니터링</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/safety" data-testid="nav-safety">
+              <a href="/safety" data-testid="nav-safety" className="font-medium">
                 <ShieldCheck className="h-4 w-4" />
                 <span>안전 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/quotes" data-testid="nav-quotes">
+              <a href="/quotes" data-testid="nav-quotes" className="font-medium">
                 <FileText className="h-4 w-4" />
                 <span>견적서 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/contracts" data-testid="nav-contracts">
+              <a href="/contracts" data-testid="nav-contracts" className="font-medium">
                 <FileSignature className="h-4 w-4" />
                 <span>계약서 관리</span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="/customer-app" data-testid="nav-customer-app">
+              <a href="/customer-app" data-testid="nav-customer-app" className="font-medium">
                 <TabletSmartphone className="h-4 w-4" />
                 <span>고객용 앱</span>
               </a>
@@ -162,7 +162,7 @@ function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleLogout} data-testid="nav-logout">
+            <SidebarMenuButton onClick={handleLogout} data-testid="nav-logout" className="font-medium text-destructive hover:text-destructive hover:bg-destructive/10">
               <LogOut className="h-4 w-4" />
               <span>로그아웃</span>
             </SidebarMenuButton>
@@ -225,12 +225,12 @@ function Router() {
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+              <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center gap-2 px-4">
                   <SidebarTrigger className="-ml-1" />
                 </div>
               </header>
-              <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+              <div className="flex flex-1 flex-col gap-4 p-6 pt-4">
                 <Switch>
                   <Route path="/">
                     {() => {
