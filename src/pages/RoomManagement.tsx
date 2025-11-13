@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { isUnauthorizedError } from "@/lib/authUtils";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import type { Room } from "@/shared/schema";
 
 export default function RoomManagement() {
@@ -12,7 +13,7 @@ export default function RoomManagement() {
   const queryClient = useQueryClient();
 
   const { data: rooms = [], isLoading } = useQuery<Room[]>({
-    queryKey: ["/api/rooms/"],
+    queryKey: [API_ENDPOINTS.ROOMS.LIST],
     select: (data: any) => {
       // Django REST Framework pagination: extract results array
       if (data && typeof data === 'object' && 'results' in data) {
@@ -32,7 +33,7 @@ export default function RoomManagement() {
         title: "관 상태 업데이트",
         description: "관 상태가 성공적으로 업데이트되었습니다.",
       });
-      queryClient.invalidateQueries({ queryKey: ["/api/rooms/"] });
+      queryClient.invalidateQueries({ queryKey: [API_ENDPOINTS.ROOMS.LIST] });
     },
     onError: (error: Error) => {
       if (isUnauthorizedError(error)) {

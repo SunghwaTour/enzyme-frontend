@@ -8,6 +8,7 @@ import RoomCard from "@/components/RoomCard";
 import QRScanner from "@/components/QRScanner";
 import BookingForm from "@/components/BookingForm";
 import CustomerForm from "@/components/CustomerForm";
+import { API_ENDPOINTS } from "@/lib/apiEndpoints";
 import type { Room, BookingWithDetails, CustomerWithPasses } from "@/shared/schema";
 
 export default function Dashboard() {
@@ -18,7 +19,7 @@ export default function Dashboard() {
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null);
 
   const { data: rooms = [] } = useQuery<Room[]>({
-    queryKey: ["/api/rooms/"],
+    queryKey: [API_ENDPOINTS.ROOMS.LIST],
     select: (data: any) => {
       // Django REST Framework pagination: extract results array
       if (data && typeof data === 'object' && 'results' in data) {
@@ -30,11 +31,11 @@ export default function Dashboard() {
   });
 
   const { data: todayBookings = [] } = useQuery<BookingWithDetails[]>({
-    queryKey: ["/api/bookings/today/"],
+    queryKey: [`${API_ENDPOINTS.BOOKINGS.LIST}today/`],
   });
 
   const { data: stats } = useQuery<{totalCustomers: number; occupiedRooms: number; totalRevenue: number; passRevenue: number}>({
-    queryKey: ["/api/stats/today/"],
+    queryKey: [`${import.meta.env.VITE_API_URL || import.meta.env.VITE_DJANGO_API_URL || 'http://localhost:8000'}/api/stats/today/`],
   });
 
   const handleCustomerFound = (customer: CustomerWithPasses) => {
